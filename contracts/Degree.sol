@@ -28,7 +28,7 @@ contract Degree{
   address  authority;
   address[] issuers;
   
-  mapping(bytes32 => degree_estruct)  degrees;
+  mapping(bytes32 => degree_estruct) degrees;
   bytes32[] degrees_keys;
   
   constructor(){
@@ -127,16 +127,16 @@ contract Degree{
     degrees[_ID].is_valid = false;
   }
   
-  function getDegreeByID(bytes32 _ID) public view returns (degree_estruct memory r_degree){
+  function getDegreeByID(bytes32 _ID) public view returns (degree_estruct memory){
     return degrees[_ID];
   }
   
-  function getDegreeByCPFAndCourse(string memory _student_CPF, string memory _course) public view returns (degree_estruct memory r_degree){
+  function getDegreeByCPFAndCourse(string memory _student_CPF, string memory _course) public view returns (degree_estruct memory){
     bytes32 ID = keccak256(abi.encodePacked(_student_CPF, _course));
     return degrees[ID];
   }
   
-  function hasCourse(string memory _course) public view returns(bool r_has_course){
+  function hasCourse(string memory _course) public view returns(bool){
     for (uint16 i=0; i < IES_courses.length; i++) 
       if (keccak256(abi.encodePacked(IES_courses[i])) == keccak256(abi.encodePacked(_course)))
         return true;
@@ -144,7 +144,7 @@ contract Degree{
     return false;
   }
   
-  function hasIssuer(address  _issuer) public view returns(bool r_has_issuer){
+  function hasIssuer(address  _issuer) public view returns(bool){
     for (uint i=0; i < issuers.length; i++)
       if (issuers[i] == _issuer)
         return true;
@@ -152,7 +152,7 @@ contract Degree{
     return false;
   }
 
-  function hasDegree(bytes32 _ID) public view returns(bool r_has_degree){
+  function hasDegree(bytes32 _ID) public view returns(bool){
     for (uint i=0; i < degrees_keys.length; i++)
       if (degrees_keys[i] == _ID)
         return true;
@@ -160,7 +160,7 @@ contract Degree{
     return false;
   }
 
-  function getDegreeIDs() public onlyAuthority view returns(bytes32[] memory r_degree_IDs){
+  function getDegreeIDs() public onlyAuthority view returns(bytes32[] memory){
     return degrees_keys;
   }
 }

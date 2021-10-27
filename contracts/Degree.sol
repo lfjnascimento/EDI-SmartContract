@@ -160,4 +160,7 @@ contract Degree{
     return false;
   }
 
+  function getDegreeIDs() public onlyAuthority view returns(bytes32[] memory r_degree_IDs){
+    return degrees_keys;
+  }
 }

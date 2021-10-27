@@ -9,7 +9,7 @@ struct student_struct{
   uint256 birthdate;
 }
 
-struct degree_estruct{
+struct degree_struct{
   bytes32 ID;
   string course;
   string academic_degree;
@@ -28,7 +28,7 @@ contract Degree{
   address  authority;
   address[] issuers;
   
-  mapping(bytes32 => degree_estruct) degrees;
+  mapping(bytes32 => degree_struct) degrees;
   bytes32[] degrees_keys;
   
   constructor(){
@@ -127,11 +127,11 @@ contract Degree{
     degrees[_ID].is_valid = false;
   }
   
-  function getDegreeByID(bytes32 _ID) public view returns (degree_estruct memory){
+  function getDegreeByID(bytes32 _ID) public view returns (degree_struct memory){
     return degrees[_ID];
   }
   
-  function getDegreeByCPFAndCourse(string memory _student_CPF, string memory _course) public view returns (degree_estruct memory){
+  function getDegreeByCPFAndCourse(string memory _student_CPF, string memory _course) public view returns (degree_struct memory){
     bytes32 ID = keccak256(abi.encodePacked(_student_CPF, _course));
     return degrees[ID];
   }

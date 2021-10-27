@@ -123,6 +123,7 @@ contract Degree{
   
   function invalidateDegree(bytes32 _ID) public{
     require(hasDegree(_ID), "degree_not_found");
+    require(degrees[_ID].is_valid, "degree_already_invalid");
     degrees[_ID].is_valid = false;
   }
   

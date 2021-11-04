@@ -61,8 +61,8 @@ contract EDI{
   }
   
   function addIssuer(address _issuer) public onlyAuthority{
-    require (!hasIssuer(_issuer), "issuer_already_exists");
-    issuers.push(_issuer);
+    if(!hasIssuer(_issuer))
+      issuers.push(_issuer);
   }
 
   function removeIssuer(address _issuer) public onlyAuthority{
@@ -87,8 +87,8 @@ contract EDI{
   }
 
   function addCourse(string memory _course) public onlyAuthority{
-    require(!hasCourse(_course), "course_already_exists");
-    IES_courses.push(_course);
+    if(!hasCourse(_course))
+      IES_courses.push(_course);
   }
   
   function getCourses() public view returns(string[] memory){
@@ -145,7 +145,6 @@ contract EDI{
   
   function invalidateDegree(bytes32 _ID) public onlyIssuers{
     require(hasDegree(_ID), "degree_not_found");
-    require(degrees[_ID].is_valid, "degree_already_invalid");
     degrees[_ID].is_valid = false;
   }
   

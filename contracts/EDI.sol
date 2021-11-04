@@ -33,18 +33,18 @@ contract EDI{
   string public IES_CNPJ = "00000000000";
   string[] public IES_courses;
   
-  address  authority;
+  address  admin;
   address[] issuers;
   
   mapping(bytes32 => Degree) degrees;
   bytes32[] degrees_keys;
   
   constructor(){
-    authority = msg.sender;
+    admin = msg.sender;
   }
   
-  modifier onlyAuthority{
-    require(msg.sender == authority, "only_authority");
+  modifier onlyAdmin{
+    require(msg.sender == admin, "only_admin");
     _;
   }
   
@@ -60,12 +60,12 @@ contract EDI{
     _;
   }
   
-  function addIssuer(address _issuer) public onlyAuthority{
+  function addIssuer(address _issuer) public onlyAdmin{
     if(!hasIssuer(_issuer))
       issuers.push(_issuer);
   }
 
-  function removeIssuer(address _issuer) public onlyAuthority{
+  function removeIssuer(address _issuer) public onlyAdmin{
     int indexToBeDeleted = -1;
     
     for (uint i=0; i < issuers.length; i++){
@@ -86,7 +86,7 @@ contract EDI{
     return issuers;
   }
 
-  function addCourse(string memory _course) public onlyAuthority{
+  function addCourse(string memory _course) public onlyAdmin{
     if(!hasCourse(_course))
       IES_courses.push(_course);
   }
@@ -181,7 +181,7 @@ contract EDI{
     return false;
   }
 
-  function getDegreeIDs() public onlyAuthority view returns(bytes32[] memory){
+  function getDegreeIDs() public onlyAdmin view returns(bytes32[] memory){
     return degrees_keys;
   }
 }

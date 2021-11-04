@@ -21,9 +21,9 @@ struct Degree{
 }
 
 contract EDI{
-  string IES_name = unicode"Instituto Federal de Educação, Ciência e Tecnologia de Mato Grosso";
-  string IES_acronym = "IFMT";
-  string[]  IES_courses;
+  string public IES_name = unicode"Instituto Federal de Educação, Ciência e Tecnologia de Mato Grosso";
+  string public IES_acronym = "IFMT";
+  string[] public IES_courses;
   
   address  authority;
   address[] issuers;

@@ -2,14 +2,14 @@
 
 pragma solidity ^0.8.0;
 
-struct student_struct{
+struct Student{
   string name;
   string nationality;
   string RG;
   uint256 birthdate;
 }
 
-struct degree_struct{
+struct Degree{
   bytes32 ID;
   string course;
   string academic_degree;
@@ -17,10 +17,10 @@ struct degree_struct{
   uint256 graduation_date;
   uint256 issue_date;
   bool is_valid;
-  student_struct student;
+  Student student;
 }
 
-contract Degree{
+contract EDI{
   string IES_name = unicode"Instituto Federal de Educação, Ciência e Tecnologia de Mato Grosso";
   string IES_acronym = "IFMT";
   string[]  IES_courses;
@@ -28,7 +28,7 @@ contract Degree{
   address  authority;
   address[] issuers;
   
-  mapping(bytes32 => degree_struct) degrees;
+  mapping(bytes32 => Degree) degrees;
   bytes32[] degrees_keys;
   
   constructor(){
@@ -127,11 +127,11 @@ contract Degree{
     degrees[_ID].is_valid = false;
   }
   
-  function getDegreeByID(bytes32 _ID) public view returns (degree_struct memory){
+  function getDegreeByID(bytes32 _ID) public view returns (Degree memory){
     return degrees[_ID];
   }
   
-  function getDegreeByCPFAndCourse(string memory _student_CPF, string memory _course) public view returns (degree_struct memory){
+  function getDegreeByCPFAndCourse(string memory _student_CPF, string memory _course) public view returns (Degree memory){
     bytes32 ID = keccak256(abi.encodePacked(_student_CPF, _course));
     return degrees[ID];
   }

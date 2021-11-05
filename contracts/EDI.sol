@@ -94,28 +94,24 @@ contract EDI{
   function getCourses() public view returns(string[] memory){
     return IES_courses;
   }
+
+  function _generateID(string memory _student_CPF, string memory _course) internal pure returns(bytes32 ){
+    return keccak256(abi.encodePacked(_student_CPF, _course));
+  }
   
-  function AddDegree(
+  function createDegree(
+    string memory _student_CPF,
+    string memory _course,
     string memory _number,
     string memory _register_number,
     string memory _process_number,
-    string memory _course,
     string memory _academic_degree,
     uint256 _completion_date,
     uint256 _graduation_date,
-    uint256 _issue_date,
-    uint256 _registration_date,
-    string memory _student_name,
-    string memory _student_nationality,
-    string memory _student_RG_number,
-    string memory _student_RG_agency,
-    string memory _student_RG_UF,
-    string memory _student_CPF,
-    string memory _student_birthplace,
-    uint256 _student_birthdate
-  ) public onlyIssuers returns(bytes32 degreeID){
+    uint256 _registration_date
+  ) public onlyIssuers returns(bytes32){
           
-    bytes32 ID = keccak256(abi.encodePacked(_student_CPF, _course));
+    bytes32 ID = _generateID(_student_CPF, _course);
 
     require(hasCourse(_course), "course_not_found");
     require(!hasDegree(ID), "degree_already_exists");
@@ -128,23 +124,44 @@ contract EDI{
     degrees[ID].academic_degree       = _academic_degree;
     degrees[ID].completion_date       = _completion_date;
     degrees[ID].graduation_date       = _graduation_date;
-    degrees[ID].issue_date            = _issue_date;
     degrees[ID].registration_date     = _registration_date;
-    degrees[ID].student.name          = _student_name;
-    degrees[ID].student.nationality   = _student_nationality;
-    degrees[ID].student.RG_number     = _student_RG_number;
-    degrees[ID].student.RG_agency     = _student_RG_agency;
-    degrees[ID].student.RG_UF         = _student_RG_UF;
-    degrees[ID].student.birthplace    = _student_birthplace;
-    degrees[ID].student.birthdate     = _student_birthdate;
-    degrees[ID].is_valid = true;
     
     degrees_keys.push(ID);
     return ID;     
   }
+
+  function addStudent(
+    string memory _CPF,
+    string memory _degree_course,
+    string memory _name,
+    string memory _nationality,
+    string memory _RG_number,
+    string memory _RG_agency,
+    string memory _RG_UF,
+    string memory _birthplace,
+    uint256 _birthdate
+  ) public onlyIssuers returns (bytes32){
+
+    bytes32 ID = _generateID(_CPF, _degree_course);
+
+    require(degrees[ID].issue_date == 0, 'degree_already_issued');
+    require(degrees[ID].graduation_date > 0, 'degree_not_created');
+
+    degrees[ID].student.name          = _name;
+    degrees[ID].student.nationality   = _nationality;
+    degrees[ID].student.RG_number     = _RG_number;
+    degrees[ID].student.RG_agency     = _RG_agency;
+    degrees[ID].student.RG_UF         = _RG_UF;
+    degrees[ID].student.birthplace    = _birthplace;
+    degrees[ID].student.birthdate     = _birthdate;
+    degrees[ID].issue_date            = block.timestamp;
+    degrees[ID].is_valid              = true;
+
+    return ID;    
+  }
+
   
   function invalidateDegree(bytes32 _ID) public onlyIssuers{
-    require(hasDegree(_ID), "degree_not_found");
     degrees[_ID].is_valid = false;
   }
   
@@ -153,7 +170,7 @@ contract EDI{
   }
   
   function getDegreeByCPFAndCourse(string memory _student_CPF, string memory _course) public view returns (Degree memory){
-    bytes32 ID = keccak256(abi.encodePacked(_student_CPF, _course));
+    bytes32 ID = _generateID(_student_CPF, _course);
     return degrees[ID];
   }
   

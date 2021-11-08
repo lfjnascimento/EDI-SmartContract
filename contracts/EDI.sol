@@ -222,6 +222,16 @@ contract EDI{
     return degrees_keys;
   }
 
+  function getCourses() public view returns(Course[] memory){
+    Course[] memory _courses = new Course[](last_course_ID);
+
+    for(uint16 i=0; i < last_course_ID; i++){
+      _courses[i] = courses[i + 1];
+    }
+
+    return _courses;
+  }
+
   function hasCourse(uint16 _ID) public view returns(bool){
     if(_ID <= last_course_ID)
       return true;

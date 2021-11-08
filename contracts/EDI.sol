@@ -73,6 +73,7 @@ contract EDI{
   function addCourse(string memory _name, string memory _academic_degree) public onlyAdmin{
     uint16 ID = ++last_course_ID;
 
+    courses[ID].ID = ID;
     courses[ID].name = _name;
     courses[ID].academic_degree = _academic_degree;
   }

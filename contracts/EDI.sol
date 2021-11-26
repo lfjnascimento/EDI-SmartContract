@@ -34,8 +34,8 @@ struct Degree{
 
 contract EDI{
   string public IES_name = unicode"Insituto Inexistente de Educação de Mato Grosso";
-  string public IES_acronym = "I2EMT";
-  string public IES_CNPJ = "11111111111111";
+  string public maintainer = "Ensino Inexistente";
+  string public maintainer_CNPJ = "11111111111111";
 
   address public admin;      // Endereco do administrador do contrato.
   address[] public issuers;  // Enderecos autorizados a emitir diplomas.

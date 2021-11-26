@@ -33,8 +33,8 @@ struct Degree{
 }
 
 contract EDI{
-  string public IES_name = unicode"Instituto Federal de Educação, Ciência e Tecnologia de Mato Grosso";
-  string public IES_acronym = "IFMT";
+  string public IES_name = unicode"Insituto Inexistente de Educação de Mato Grosso";
+  string public IES_acronym = "I2EMT";
   string public IES_CNPJ = "11111111111111";
 
   address public admin;      // Endereco do administrador do contrato.

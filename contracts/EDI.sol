@@ -176,7 +176,7 @@ contract EDI{
   * - O diploma deve ter sido criado anteriomente;
   * - O diploma nao pode ter sido emitido.
   */
-  function addStudent(
+  function addStudentToDegree(
     string memory _CPF,
     uint16 _course_ID,
     string memory _name,
